@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 // Endpoint to generate QR code and send it to the client
 app.get('/generate-qr', (req, res) => {
     // const qrValue = getNextQRValue();  // Get next QR value
-    url = '/scan-qr';
+    url = domain + '/scan-qr';
     QRCode.toDataURL(url, (err, url) => {
         if (err) {
             return res.status(500).send('Error generating QR code');
