@@ -6,14 +6,18 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-let currentQR = 1;  // Track current QR value
+let currentQR = 0;  // Track current QR value
 
 // Function to get the next QR value (alternating between 1, 2, and 3)
+const forms = [
+    'https://forms.gle/fAfoLuwkEyjmrsh98',
+    'https://forms.gle/SxVBbCeYX9CpDZJ16',
+    'https://forms.gle/apB3tv1kTCSN9jAT6',
+];
 
 function getNextQRValue() {
     currentQR = currentQR === 3 ? 1 : currentQR + 1;
-    let qrurl = `./public/qr${currentQR}.png`;
-    return qrurl;
+    return forms[currentQR];
 }
 
 // Serve the index page for the PC (this is where the QR code will be displayed)
@@ -35,7 +39,6 @@ app.get('/generate-qr', (req, res) => {
 
 app.get('/scan-qr', (req, res) => {
     console.log('QR code scanned, notifying PC');
-    const newQRValue = getNextQRValue();
     QRCode.toDataURL(newQRValue.toString(), (err, url) => {
         if (err) {
             return console.error('Error generating new QR');
