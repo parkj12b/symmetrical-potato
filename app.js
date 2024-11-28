@@ -42,13 +42,8 @@ app.get('/generate-qr', (req, res) => {
 
 app.get('/scan-qr', (req, res) => {
     console.log('QR code scanned, notifying PC');
-    QRCode.toDataURL(newQRValue.toString(), (err, url) => {
-        if (err) {
-            return console.error('Error generating new QR');
-        }
-        // Emit event to all connected clients to refresh the QR code
-        io.emit('scan', {});
-    });
+    // Emit event to all connected clients to refresh the QR code
+    io.emit('scan', {});
     res.redirect(getFormValue());  // Redirect the user after the scan
 });
 
