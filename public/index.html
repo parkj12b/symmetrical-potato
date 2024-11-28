@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Display</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    <h1>Scan this QR Code</h1>
+    <img id="qrCode" src="" alt="QR Code" />
+
+    <script>
+        const qrCounter = 0;
+        const socket = io();
+
+        // Fetch the initial QR code when the page loads
+        fetch('/generate-qr')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('qrCode').src = data.qrCodeUrl;
+            });
+
+        // Listen for the 'refreshQR' event to refresh the QR code
+        socket.on('scan', (data) => {
+            Swal.fire({
+                title: 'QR Code Refreshed',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        });
+    </script>
+</body>
+
+</html>
