@@ -6,18 +6,21 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-let currentQR = 0;  // Track current QR value
+require('dotenv').config();
+
+const domain = process.env.DOMAIN;
+let formCounter = 0;  // Track current QR value
 
 // Function to get the next QR value (alternating between 1, 2, and 3)
 const forms = [
-    'https://forms.gle/fAfoLuwkEyjmrsh98',
-    'https://forms.gle/SxVBbCeYX9CpDZJ16',
-    'https://forms.gle/apB3tv1kTCSN9jAT6',
+    process.env.FORM_ONE,
+    process.env.FORM_TWO,
+    process.env.FORM_THREE,
 ];
 
-function getNextQRValue() {
-    currentQR = currentQR === 3 ? 1 : currentQR + 1;
-    return forms[currentQR];
+function getFormValue() {
+    formCounter = formCounter === 3 ? 1 : formCounter + 1;
+    return forms[formCounter];
 }
 
 // Serve the index page for the PC (this is where the QR code will be displayed)
@@ -46,7 +49,7 @@ app.get('/scan-qr', (req, res) => {
         // Emit event to all connected clients to refresh the QR code
         io.emit('scan', {});
     });
-    res.redirect('/');  // Redirect the user after the scan
+    res.redirect(getFormValue());  // Redirect the user after the scan
 });
 
 // WebSocket connection
