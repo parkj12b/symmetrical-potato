@@ -19,7 +19,7 @@ const forms = [
 ];
 
 function getFormValue() {
-    formCounter = formCounter === 3 ? 0 : formCounter + 1;
+    formCounter = formCounter === 2 ? 0 : formCounter + 1;
     return forms[formCounter];
 }
 
