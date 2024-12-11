@@ -5,8 +5,11 @@ const QRCode = require('qrcode');
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
+const path = require('path');
 
 require('dotenv').config();
+const staticPath = path.join(__dirname, 'public');
+app.use(express.static(staticPath));
 
 const domain = process.env.DOMAIN;
 let formCounter = 0;  // Track current QR value
